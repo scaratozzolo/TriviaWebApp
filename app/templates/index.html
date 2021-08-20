@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container col-sm-4 mt-4">
+
+    <div class="card card-dark">
+      <div class="card-header">
+        <h1 class="card-title">Welcome to Trivia</h1>
+      </div>
+      <!-- /.card-header -->
+      
+        <div class="card-body">
+
+            <div class="d-flex flex-column pb-4">
+                <a class="btn btn-primary" href="/create">Create a Game</a>
+            </div>
+
+            <div class="d-flex flex-column">
+                <form action="/" method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="form-row justify-content-center">
+                        <div class="col-sm-4">
+
+                            {% if form.game_code.errors %}
+
+                                {{ form.game_code(class="form-control is-invalid", placeholder="Enter game code")}}<br>
+                                {% for error in form.game_code.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+
+                            {% else %}
+
+                                {{ form.game_code(class="form-control", placeholder="Enter game code")}}<br>
+
+                            {% endif %}
+
+                        </div>
+                        <div class="col-sm-5">
+
+                            {% if form.user_name.errors %}
+
+                                {{ form.user_name(class="form-control is-invalid", placeholder="Enter a name")}}<br>
+                                {% for error in form.user_name.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+
+                            {% else %}
+
+                                {{ form.user_name(class="form-control", placeholder="Enter a name")}}<br>
+
+                            {% endif %}
+
+                        </div>
+                        <div class="col-sm-3">
+
+                            {{ form.submit(class="btn btn-success btn-block") }}
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="d-flex">
+                    <footer class="text-muted">v1.0.0 BETA</footer>
+                </div>
+            </div>
+            
+        </div>
+        <!-- /.card-body -->
+        
+        
+
+    </div>
+
+</div>
+
+{% endblock %}
+

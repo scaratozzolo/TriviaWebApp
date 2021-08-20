@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+
+    <div class="row">
+
+        <div class="col-sm-8 mt-4">
+
+            <div class="card card-dark">
+                <div class="card-header">
+                  <h1 class="card-title">Game Code: {{ session.create_game_data.game_code }}</h1>
+                  <a href="/clearsession" class="btn btn-danger float-right">End Game</a>
+                </div>
+                <!-- /.card-header -->
+                
+                  <div class="card-body">
+          
+          
+                      <div class="d-flex flex-column">
+                          
+                          
+    
+                        <div id="accordionRounds">
+    
+    
+                            {% for round in session.game_questions %}
+                              
+                            <div class="card">
+                                <div class="card-header bg-primary" id="heading{{ round }}">
+                                  <h5 class="mb-0">
+                                    <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapse{{ round }}" aria-expanded="true" aria-controls="collapse{{ round }}">
+                                      Round {{ round }}
+                                    </button>
+    
+                                    <button class="btn btn-danger float-right" onclick="startRound({{ round }});" id="start-round-{{ round }}">Start Round</button>
+                                  </h5>
+                                </div>
+                            
+                                <div id="collapse{{ round }}" class="collapse" aria-labelledby="heading{{ round }}" data-parent="#accordionRounds">
+                                    <div class="card-body">
+    
+                                        <div id="accordion{{ round }}">
+                                        {% for question in session.game_questions[round] %}
+                                            
+    
+                                                <div class="card">
+                                                    <div class="card-header bg-info" id="heading{{ round }}{{ question}}">
+                                                        <h5 class="mb-0">
+                                                        <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapse{{ round }}{{ question}}" aria-expanded="true" aria-controls="collapse{{ round }}{{ question}}">
+                                                            Question {{ question.split('_')[-1] }} - {{ session.game_questions[round][question]['category'] }}
+                                                        </button>
+    
+                                                        <button class="btn btn-danger float-right" onclick="startQuestion('{{ question }}');" id="question-button-{{ question }}">Start Question</button>
+                                                        </h5>
+                                                    </div>
+                                                
+                                                    <div id="collapse{{ round }}{{ question}}" class="collapse" aria-labelledby="heading{{ round }}{{ question}}" data-parent="#accordion{{ round }}">
+                                                        <div class="card-body">
+                                                            
+                                                            <p>Question: {{ session.game_questions[round][question]['question'] }}</p>
+                                                            <p>Answer: {{ session.game_questions[round][question]['answer'] }}</p>
+                                                            <p>Difficulty: {{ session.game_questions[round][question]['difficulty'] }}</p>
+                                                            <p>Provider: {{ session.game_questions[round][question]['provider'] }}</p>
+    
+                                                        </div>
+                                                    </div>
+                                                </div>
+    
+    
+                                            {% endfor %}
+                                        </div>
+    
+                                          
+    
+    
+                                    </div>
+                                </div>
+                              </div>
+    
+    
+                            {% endfor %}
+    
+                          </div>
+    
+                      </div>
+                      
+                  </div>
+                  <!-- /.card-body -->
+                  
+                  
+          
+              </div>
+    
+        </div>
+    
+    
+    
+    
+    
+        <div class="col-sm-4 mt-4">
+
+
+          <div class="card card-warning">
+
+            <div class="card-header">
+              <h1 class="card-title">Scores</h1>
+            </div>
+            <!-- /.card-header -->
+            
+              <div class="card-body">
+      
+      
+                  <div class="d-flex flex-column">
+
+
+                    <div id="players-scores"></div>
+                      
+                    
+
+                  </div>
+                  
+              </div>
+                <!-- /.card-body -->
+            </div>
+
+    
+          <div class="card card-warning">
+
+              <div class="card-header">
+                <h1 class="card-title">Player Answer Log</h1>
+              </div>
+              <!-- /.card-header -->
+              
+                <div class="card-body">
+        
+        
+                    <div class="d-flex flex-column">
+
+
+                      <div id="players-details"></div>
+                        
+                      
+  
+                    </div>
+                    
+                </div>
+                  <!-- /.card-body -->
+          </div>
+
+    
+        </div>
+
+    </div>
+
+    
+
+
+
+
+    
+
+</div>
+
+{% endblock %}
+
+
+
+{% block js %}
+
+<script type="text/javascript" charset="utf-8">
+
+    var socket = io();
+    socket.on('connect', function() {
+      socket.emit('hostGame', {'game_code': '{{ session.create_game_data.game_code }}', 'num_rounds': '{{ session.create_game_data.num_rounds }}', 
+                                'num_questions': '{{ session.create_game_data.num_questions }}', 'provider': '{{ session.create_game_data.provider_select }}'});
+    });
+
+
+    socket.on('message', function (message) {
+      console.log(message);
+    });
+
+    socket.on('gameQuestions', function (data) {
+      var gameQuestions = data;
+      console.log(data)
+    });
+
+
+    socket.on('submitAnswerHost', function (json) {
+
+        var newHTML = "<div class='row' id='mark-answer-" + json.user_name + "-" + json.round + "_" + json.question_num + "'><div class='col'><div>" + json.round + "-" + json.question_num + "</div><div>" + json.user_name + ": " + json.answer + "</div><div>Points: " + json.points + "</div></div><div class='col'><button type='button' class='btn btn-danger ml-2 float-right' id='wrong-button-" + json.user_name + "-" + json.round + "_" + json.question_num + "' onClick='markAnswer(`wrong`, " + json.points + ", `" + json.user_name + "`, `" + json.round + "_" + json.question_num + "`)'><i class='fas fa-times'></i></button><button type='button' class='btn btn-success float-right' id='correct-button-" + json.user_name + "-" + json.round + "_" + json.question_num + "' onClick='markAnswer(`correct`, " + json.points + ", `" + json.user_name + "`, `" + json.round + "_" + json.question_num + "`)'><i class='fas fa-check'></i></button></div></div><hr />"
+
+        $("#players-details").append(newHTML);
+        
+
+    });
+
+
+    socket.on('scoreUpdate', function (json) {
+      
+      $("#players-scores").empty();
+
+      jQuery.each(json, function(i, val){
+
+        $("#players-scores").append( $("<div></div>").html(i + ": " + val) );
+        $("#players-scores").append( $("<hr/>") );
+
+      });
+
+    });
+
+
+
+    function startRound(round){
+        socket.emit('startRound', {"round": round, "game_code": '{{ session.create_game_data.game_code }}'});
+        $("#start-round-" + round).remove();
+    };
+
+
+    function startQuestion(question){
+        socket.emit('startQuestion', {"question": question, "game_code": '{{ session.create_game_data.game_code }}'})
+
+        $("#question-button-" + question).html("End Question").removeClass("btn-danger").addClass("btn-success").attr("onClick", "endQuestion('" + question + "')");
+        
+    };
+
+
+
+    function endQuestion(question){
+        socket.emit('endQuestion', {"question": question, "game_code": '{{ session.create_game_data.game_code }}'})
+
+        $("#question-button-" + question).remove();
+
+        $("#players-details").empty();
+    };
+
+
+    function markAnswer(status, points, user, question){
+
+      socket.emit('markAnswer', {"question": question, "game_code": '{{ session.create_game_data.game_code }}', "user_name": user, "points": points, "status": status})
+
+      $("#mark-answer-" + user + "-" + question).remove();
+
+    }
+
+</script>
+
+{% endblock %}

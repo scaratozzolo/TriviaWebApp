@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container col-sm-4 mt-4">
+
+    <div class="card card-dark">
+      <div class="card-header">
+        <h1 class="card-title">Create a game</h1>
+      </div>
+      <!-- /.card-header -->
+      
+        <div class="card-body">
+
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+
+                <div class="row justify-content-between">
+
+                  <div class="col-sm-4">
+
+                    {{ form.provider_select.label }}
+                    {% for subfield in form.provider_select %}
+                        <div>{{ subfield }} {{ subfield.label }}</div>
+                    {% endfor %}
+  
+                  </div>
+  
+  
+                  <div class="col-sm-4">
+  
+                    
+                    {{ form.num_rounds.label }} {{ form.num_rounds(placeholder="Max rounds: 10") }}
+                    {% for error in form.num_rounds.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+  
+                    
+  
+                  </div>
+
+
+                  <div class="col-sm-4">
+  
+                    {{ form.num_questions.label }} {{ form.num_questions(placeholder="Max questions: 10") }}
+                    {% for error in form.num_questions.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+
+                    {{ form.submit(class="btn btn-success btn-block mt-4") }}
+                    <p id="notice"></p>
+  
+                  </div>
+
+
+                </div>
+                
+
+                
+
+            </form>
+            
+            
+        </div>
+        <!-- /.card-body -->
+        
+        
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block js %}
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+
+
+      $("#submit").on("click", function(){
+          $("#notice").html('Generating Game <i class="fas fa-spinner fa-spin"></i>');
+      });
+
+
+  });
+</script>
+
+{% endblock %}

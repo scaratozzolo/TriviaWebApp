@@ -1,0 +1,7 @@
+flask
+Flask-WTF
+flask-socketio
+flask-login
+Flask-Session
+eventlet
+requests

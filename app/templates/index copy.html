@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container col-sm-4 mt-4">
+
+    <div class="card card-dark">
+      <div class="card-header">
+        <h1 class="card-title">Welcome to Trivia</h1>
+      </div>
+      <!-- /.card-header -->
+      
+        <div class="card-body">
+
+            <div class="d-flex flex-column pb-4">
+                <button class="btn btn-primary">Create a Game</button>
+            </div>
+
+            <div class="d-flex flex-column">
+                <form action="" method="post">
+                    <div class="form-row justify-content-center">
+                        <div class="col-sm-4">
+                            <input type="gameCode" class="form-control" id="joinGame" aria-describedby="joinHelp" placeholder="Enter game code">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="userName" class="form-control" id="userName" aria-describedby="joinHelp" placeholder="Enter a name">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-success btn-block">Join</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            
+        </div>
+        <!-- /.card-body -->
+        
+        
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-sm-8 mt-4">
+
+
+      <div class="card card-dark">
+        <div class="card-header">
+          <h1 class="card-title" id="info-title">Trivia</h1>
+          <a href="/clearsession" class="btn btn-danger float-right">Leave Game</a>
+        </div>
+        <!-- /.card-header -->
+        
+          <div class="card-body">
+  
+  
+              <div class="d-flex flex-column" id="main-body">
+                  
+                  <h5 id="gameinfo">Hello, {{ current_user.user_name }}! Game will start soon!</h5>
+  
+                  <div id="categories">
+  
+                    <h6 id="categories-title"></h6>
+                    <ul id="categories-body"></ul>
+  
+                    </ul>
+  
+                  </div>
+  
+                  <h6 id="answer"></h6>
+  
+                  <div class=form-inline>
+  
+                    <div class="form-group mr-2 mb-2">
+                      <input type="text" id="user-answer" class="form-control invisible" name="user-answer" placeholder="Your answer:">                  
+                    </div>
+  
+                    <div class="form-group mr-2 mb-2">
+                      <input type="number" id="user-points" class="form-control invisible" name="user-points" min="1" max="10" placeholder="Points:">                  
+                    </div>
+  
+                    <button type="button" name="submit" class="btn btn-primary mb-2 invisible" id="user-submit">Submit Answer</button>
+  
+                  </div>
+  
+              </div>
+              
+              
+          </div>
+          <!-- /.card-body -->
+          
+          
+  
+      </div>
+
+
+    </div>
+
+
+
+
+    <div class="col-sm-4 mt-4">
+
+
+      <div class="card card-warning">
+
+        <div class="card-header">
+          <h1 class="card-title">Scores</h1>
+        </div>
+        <!-- /.card-header -->
+        
+          <div class="card-body">
+  
+  
+              <div class="d-flex flex-column">
+
+
+                <div id="players-scores"></div>
+                  
+                
+
+              </div>
+              
+          </div>
+            <!-- /.card-body -->
+        </div>
+
+
+    </div>
+
+
+
+
+  </div>
+
+    
+
+</div>
+
+{% endblock %}
+
+
+
+
+{% block js %}
+
+<script type="text/javascript" charset="utf-8">
+    var socket = io();
+    socket.on('connect', function() {
+      socket.emit('joinGame', {'game_code': '{{ session.join_game_data.game_code }}', 'user_name': '{{ session.join_game_data.user_name }}', 
+                                'user_id': '{{ session.join_game_data.user_id }}'});
+
+        
+    });
+
+
+    socket.on('message', function (message) {
+      console.log(message);
+    });
+
+
+    socket.on('startRoundPlayer', function (json) {
+
+      $('#gameinfo').html("Round " + json.round + " will start soon!")
+
+      $("#categories-title").html("The categories will be:")
+
+      $('#categories-body').html("")
+      for(var i=0; i<json.cats.length; i++){
+        $('#categories-body').append($("<li></li>").html(json.cats[i]))
+      }
+      
+      $('#answer').html("")
+      
+    });
+
+
+
+    socket.on('startQuestionPlayer', function (json) {
+      // console.log(json);
+      // $('#info-title').html("Round: " + json.round + " - Question: " + json.question_num);
+      $('#info-title').html("Question: " + json.round + " - " + json.question_num + ", Category: " + json.category);
+
+      $('#answer').html("")
+
+      $('#user-answer').removeClass("invisible");
+      $('#user-points').removeClass("invisible");
+      $('#user-submit').removeClass("invisible");
+      $('#user-submit').attr("onclick", "submitAnswer('" + json.round + "_" + json.question_num + "')");
+
+      $('#gameinfo').html(json.question);
+
+      $("#categories").html("");
+
+
+    });
+
+
+
+
+    function submitAnswer(question){
+
+      socket.emit('submitAnswerPlayer', {"answer": $("#user-answer").val() , "points": $("#user-points").val(), "question": question, "game_code": '{{ session.join_game_data.game_code }}', "user_name": '{{ current_user.user_name }}'})
+
+      $("#user-answer").val("")
+      $("#user-points").val("")
+
+      $('#user-answer').addClass("invisible");
+      $('#user-points').addClass("invisible");
+      $('#user-submit').addClass("invisible");
+
+      $('#answer').html("Answer submitted!")
+    };
+
+
+
+    socket.on('endQuestionPlayer', function (json) {
+
+      $('#answer').html("The answer was: " + json.answer);
+
+      $('#user-answer').addClass("invisible");
+      $('#user-points').addClass("invisible");
+      $('#user-submit').addClass("invisible");
+
+    });
+
+
+
+    socket.on('scoreUpdate', function (json) {
+      
+      $("#players-scores").empty();
+
+      jQuery.each(json, function(i, val){
+
+        $("#players-scores").append( $("<div></div>").html(i + ": " + val) );
+        $("#players-scores").append( $("<hr/>") );
+
+      });
+
+    });
+</script>
+
+{% endblock %}
