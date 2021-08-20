@@ -35,6 +35,7 @@ def random_question(difficulty, provider=None, open_session_token=None):
 def max_offsets():
     # {100: 9745, 200: 30904, 300: 9284, 400: 29955, 500: 8873, 600: 20312, 800: 19809, 1000: 19837}
 
+    print("getting jservice max offsets")
     values = [100,200,300,400,500,600,800,1000]
 
     off_dict = {}
