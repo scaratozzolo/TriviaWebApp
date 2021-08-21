@@ -35,19 +35,19 @@
   
                   <h6 id="answer"></h6>
   
-                  <div class=form-inline>
+                  <form action="" class="form-inline" id="answer-form">
   
-                    <div class="form-group mr-2 mb-2">
-                      <input type="text" id="user-answer" class="form-control invisible" name="user-answer" placeholder="Your answer:">                  
+                    <div class="form-group col-sm-4 mr-2 mb-2">
+                      <input type="text" id="user-answer" class="form-control flex-fill invisible" name="user-answer" placeholder="Your answer:" required>                  
                     </div>
   
-                    <div class="form-group mr-2 mb-2">
-                      <input type="number" id="user-points" class="form-control invisible" name="user-points" min="1" max="10" placeholder="Points:">                  
+                    <div class="form-group col-sm-4 mr-2 mb-2">
+                      <input type="number" id="user-points" class="form-control flex-fill invisible" name="user-points" min="1" max="10" placeholder="Points:" required>                  
                     </div>
   
-                    <button type="button" name="submit" class="btn btn-primary mb-2 invisible" id="user-submit">Submit Answer</button>
+                    <button type="submit" name="submit" class="btn btn-primary mb-2 flex-fill invisible" id="user-submit">Submit Answer</button>
   
-                  </div>
+                  </form>
   
               </div>
               
@@ -150,14 +150,17 @@
       $('#answer').html("")
 
       $('#user-answer').removeClass("invisible");
-      $('#user-points').removeClass("invisible");
       $('#user-submit').removeClass("invisible");
-      $('#user-submit').attr("onclick", "submitAnswer('" + json.round + "_" + json.question_num + "')");
+
+      $('#user-points').removeClass("invisible");
+      $('#user-points').attr("max", json.max_points);
+      $('#user-points').attr("placeholder", "Points (max " + json.max_points + "):");
+
+      $('#answer-form').attr("onsubmit", "submitAnswer('" + json.round + "_" + json.question_num + "'); return false;");
 
       $('#gameinfo').html(json.question);
 
       $("#categories").html("");
-
 
     });
 

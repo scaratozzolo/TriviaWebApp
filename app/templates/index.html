@@ -26,14 +26,14 @@
 
                             {% if form.game_code.errors %}
 
-                                {{ form.game_code(class="form-control is-invalid", placeholder="Enter game code")}}<br>
+                                {{ form.game_code(class="form-control is-invalid", placeholder="Enter game code"), autocomplete="off"}<br>
                                 {% for error in form.game_code.errors %}
                                 <span style="color: red;">[{{ error }}]</span>
                                 {% endfor %}
 
                             {% else %}
 
-                                {{ form.game_code(class="form-control", placeholder="Enter game code")}}<br>
+                                {{ form.game_code(class="form-control", placeholder="Enter game code", autocomplete="off")}}<br>
 
                             {% endif %}
 
@@ -42,14 +42,14 @@
 
                             {% if form.user_name.errors %}
 
-                                {{ form.user_name(class="form-control is-invalid", placeholder="Enter a name")}}<br>
+                                {{ form.user_name(class="form-control is-invalid", placeholder="Enter a name", autocomplete="off")}}<br>
                                 {% for error in form.user_name.errors %}
                                 <span style="color: red;">[{{ error }}]</span>
                                 {% endfor %}
 
                             {% else %}
 
-                                {{ form.user_name(class="form-control", placeholder="Enter a name")}}<br>
+                                {{ form.user_name(class="form-control", placeholder="Enter a name", autocomplete="off")}}<br>
 
                             {% endif %}
 

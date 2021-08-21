@@ -55,11 +55,21 @@ def start_question(json):
 
     gameround, question_num = json['question'].split("_")
     # send(f'Round {gameround}, Question {question_num} starting...', to=json["game_code"])
-    
-    q = session["game_questions"][gameround][json['question']]["question"]
-    cat = session["game_questions"][gameround][json['question']]["category"]
 
-    emit("startQuestionPlayer", {'question': q, 'category': cat, 'round': gameround, "question_num": question_num}, to=json["game_code"])
+    question_data = session["game_questions"][gameround][json['question']]
+    
+    q = question_data["question"]
+    cat = question_data["category"]
+
+    if question_data['bonus']:
+        if int(gameround) == session["create_game_data"]["num_rounds"]:
+            max_points = ((10 * int(question_num)) // 2) * (int(gameround)//2) # (int(gameround) - 1)
+        else:
+            max_points = (10 * int(question_num)) // 2
+    else:
+        max_points = 10
+
+    emit("startQuestionPlayer", {'question': q, 'category': cat, 'round': gameround, "question_num": question_num, "max_points": max_points}, to=json["game_code"])
 
 
 @socketio.on('endQuestion')

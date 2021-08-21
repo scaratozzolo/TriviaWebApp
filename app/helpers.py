@@ -159,8 +159,14 @@ def generate_game(rounds=4, num_questions=5, provider="both"):
 
             # print(f"{round}-{question} gen")
 
+            if question == (num_questions):
+                game_questions[str(round)][f"{round}_{question}"]['bonus'] = True
+            else:
+                game_questions[str(round)][f"{round}_{question}"]['bonus'] = False
+
 
     game_questions[str(round)][f"{rounds}_{num_questions-1}"] = random_question("easy", provider, token)
+    game_questions[str(round)][f"{rounds}_{num_questions-1}"] ['bonus'] = False
 
     return game_questions
 
