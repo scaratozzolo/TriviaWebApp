@@ -102,7 +102,7 @@ def random_open(difficulty, token, BLACKLIST_CATEGORY_IDS = {15, 16, 29, 31, 32}
         q_data = requests.get(f"https://opentdb.com/api.php?amount=1&category={rand_category}&token={token}").json()
 
         q = html.unescape(q_data["results"][0]["question"])
-        if q.lower().find("which of these") > -1 or q.lower().find("which of the following") > -1:
+        if q.lower().find("which of these") > -1 or q.lower().find("which of the following") > -1 or q.lower().find("which one of these") > -1:
             continue
         else:
             valid = True
@@ -156,6 +156,8 @@ def generate_game(rounds=4, num_questions=5, provider="both"):
                         game_questions[str(round)][f"{round}_{question}"] = random_question("hard", provider, token)
                     else:
                         game_questions[str(round)][f"{round}_{question}"] = random_question("medium", provider, token)
+
+            # print(f"{round}-{question} gen")
 
 
     game_questions[str(round)][f"{rounds}_{num_questions-1}"] = random_question("easy", provider, token)

@@ -9,8 +9,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, In
 class CreateGameForm(FlaskForm):
     
     provider_select = RadioField("Question provider:", choices=[("open", "Open DB"), ("jep", "Jeopardy"), ("both", "Both")], default="both")
-    num_rounds = IntegerField("# of rounds", validators=[DataRequired(), NumberRange(1, 10)])
-    num_questions = IntegerField("# of questions per round", validators=[DataRequired(), NumberRange(1, 10)])
+    num_rounds = IntegerField("# of rounds:", validators=[DataRequired(), NumberRange(1, 10)])
+    num_questions = IntegerField("# of questions per round:", validators=[DataRequired(), NumberRange(1, 10)])
     submit = SubmitField('Submit')
     
 
