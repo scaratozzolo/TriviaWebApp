@@ -26,6 +26,10 @@ def index():
 
         session["join_game_data"]['user_id'] = user.get_id()
 
+        game = Game.query.filter_by(game_code=form.game_code.data).first()
+        game.users.append(user.user_name)
+        db.session.commit()
+
         return redirect(f"/game/{form.game_code.data}")
 
     live_games = Game.query.filter_by(password='').filter_by(game_started=False).all()
@@ -63,6 +67,7 @@ def create_game():
                         provider=form.provider_select.data,
                         game_started=False,
                         game_msg=form.game_msg.data,
+                        users=[],
                         cur_round=0,
                         cur_question=0,
                         cur_question_id="",

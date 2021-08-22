@@ -55,8 +55,13 @@ class JoinGameForm(FlaskForm):
 
 
     def validate_user_name(self, user_name):
-        # TODO check game for name
-        test = None
-        if test is not None:
+        
+        game = Game.query.filter_by(game_code=self.get_game_code().data).first()
+
+        if not game:
+            return None
+
+
+        if user_name.data in game.users:
             raise ValidationError('Name already in use!')
 

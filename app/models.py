@@ -9,6 +9,8 @@ class Game(db.Model):
     provider = db.Column(db.String(10))
     game_msg = db.Column(db.String(512))
 
+    users = db.Column(db.PickleType)
+
     game_started = db.Column(db.Boolean)
     cur_round = db.Column(db.Integer)
     cur_question = db.Column(db.Integer)
