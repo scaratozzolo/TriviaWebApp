@@ -1,5 +1,4 @@
 from app import db
-import bcrypt
 
 class Game(db.Model):
 
