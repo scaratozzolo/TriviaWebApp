@@ -32,7 +32,7 @@
                                 <div class="card-header bg-primary" id="heading{{ round }}">
                                   <h5 class="mb-0">
                                     <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapse{{ round }}" aria-expanded="true" aria-controls="collapse{{ round }}">
-                                      Round {{ round }}
+                                      Round {{ round }} <i class="fas fa-chevron-down"></i>
                                     </button>
                                     {% if round > game.cur_round %}
                                     <button class="btn btn-danger float-right" onclick="startRound({{ round }});" id="start-round-{{ round }}">Start Round</button>
@@ -51,7 +51,7 @@
                                                     <div class="card-header bg-info" id="heading{{ round }}{{ question}}">
                                                         <h5 class="mb-0">
                                                         <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapse{{ round }}{{ question}}" aria-expanded="true" aria-controls="collapse{{ round }}{{ question}}">
-                                                            Question {{ question.split('_')[-1] }} - {{ session.game_questions[round][question]['category'] }}
+                                                            Question {{ question.split('_')[-1] }} - {{ session.game_questions[round][question]['category'] }} <i class="fas fa-chevron-down"></i>
                                                         </button>
                                                         {% if question > game.cur_question_id %}
                                                         <button class="btn btn-danger float-right" onclick="startQuestion('{{ question }}');" id="question-button-{{ question }}">Start Question</button>
