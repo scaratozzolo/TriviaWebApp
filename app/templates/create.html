@@ -50,8 +50,8 @@
                     {{ form.password.label }}
                     {{ form.password(class="form-control", placeholder="Enter password", autocomplete="off") }}<br>
 
-                    {{ form.submit(class="btn btn-success btn-block mt-4") }}
-                    <p id="notice"></p>
+                    {{ form.game_msg.label }}
+                    {{ form.game_msg(class="form-control", placeholder="Enter message", autocomplete="off") }}<br>
   
                   </div>
 
@@ -59,7 +59,10 @@
                 </div>
                 
 
-                
+                <div>
+                  {{ form.submit(class="btn btn-success btn-block mt-4") }}
+                  <p id="notice"></p>
+                </div>
 
             </form>
             

@@ -61,7 +61,8 @@ def create_game():
                         num_rounds=form.num_rounds.data,
                         num_questions=form.num_questions.data,
                         provider=form.provider_select.data,
-                        game_started=False)
+                        game_started=False,
+                        game_msg=form.game_msg.data)
 
         db.session.add(new_game)
         db.session.commit()
@@ -91,7 +92,9 @@ def play_game(game_code):
     if "join_game_data" not in session:
         return redirect("/")
 
-    return render_template("play_game.html", title="Play Trivia")
+    game = Game.query.filter_by(game_code=game_code).first()
+
+    return render_template("play_game.html", title="Play Trivia", game=game)
 
 
 

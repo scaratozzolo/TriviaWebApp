@@ -22,7 +22,11 @@
   
               <div class="d-flex flex-column" id="main-body">
                   
-                  <h5 id="gameinfo">Hello, {{ current_user.user_name }}! Game will start soon!</h5>
+                  <h5 id="gameinfo">Hello, {{ current_user.user_name }}! Game will start soon!<br>
+                  {% if game.game_msg != '' %}
+                  Message from host: {{ game.game_msg }}
+                  {% endif %}
+                  </h5>
   
                   <div id="categories">
   

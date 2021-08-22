@@ -12,14 +12,16 @@ class CreateGameForm(FlaskForm):
     provider_select = RadioField("Question provider:", choices=[("open", "Open DB"), ("jep", "Jeopardy"), ("both", "Both")], default="both")
     num_rounds = IntegerField("# of rounds:", validators=[DataRequired(), NumberRange(1, 10)])
     num_questions = IntegerField("# of questions per round:", validators=[DataRequired(), NumberRange(1, 10)])
-    password = PasswordField("Password (optional)")
+    password = PasswordField("Password (optional):")
+    game_msg = StringField("Message to players:")
     submit = SubmitField('Submit')
+
+    def validate_game_msg(self, game_msg):
+
+        if len(game_msg.data) > 512:
+            raise ValidationError(f'Game message must be less than 512 characters! Currently {len(game_msg.data)}.')
+
     
-
-
-
-
-
 
 
 
@@ -45,10 +47,11 @@ class JoinGameForm(FlaskForm):
 
         game = Game.query.filter_by(game_code=self.get_game_code().data).first()
 
-        print(game.password)
+        if not game:
+            return None
 
         if not game.check_password(password.data):
-            raise ValidationError('Password')
+            raise ValidationError('Password incorrect')
 
 
     def validate_user_name(self, user_name):
