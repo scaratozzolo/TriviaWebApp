@@ -27,7 +27,9 @@ def index():
         session["join_game_data"]['user_id'] = user.get_id()
 
         game = Game.query.filter_by(game_code=form.game_code.data).first()
-        game.users.append(user.user_name)
+        users = list(game.users)
+        users.append(user.user_name)
+        game.users = users
         db.session.commit()
 
         return redirect(f"/game/{form.game_code.data}")
