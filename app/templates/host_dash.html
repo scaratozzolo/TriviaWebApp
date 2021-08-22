@@ -134,7 +134,10 @@
           <div class="card card-warning">
 
               <div class="card-header">
-                <h1 class="card-title">Player Answer Log</h1>
+                <h1 class="card-title">
+                  <div>Player Answer Log</div>
+                </h1>
+                <div class="card-title float-right" id="num-users">{{ game.users|length }} in game</div>
               </div>
               <!-- /.card-header -->
               
@@ -216,6 +219,17 @@
 
     });
 
+    socket.on('playerJoinGame', function (json) {
+      
+      $("#num-users").html(json.num_players + " in game")
+
+    });
+
+    socket.on('playerLeftGame', function (json) {
+      
+      $("#num-users").html(json.num_players + " in game")
+
+    });
 
 
     function startRound(round){

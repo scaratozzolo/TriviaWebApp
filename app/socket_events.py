@@ -23,9 +23,9 @@ def join_game(json):
 
     join_room(json["game_code"])
 
-    # print('received json: ' + str(json))
-    # print(request.sid)
-    send(json["user_name"] + ' has joined the game.', to=json["game_code"])
+    game = Game.query.filter_by(game_code=json["game_code"]).first()
+
+    emit("playerJoinGame", {"num_players": len(game.users)}, to=json["game_code"])
 
 
 @socketio.on('hostGame')
@@ -148,9 +148,7 @@ def end_game(json):
 
 @socketio.on('leaveGame')
 def leave_game(json):
-
-    # TODO send winners
-    emit("playerLeftGame", to=json["game_code"])
+    
 
     leave_room(json["game_code"])
 
@@ -159,5 +157,7 @@ def leave_game(json):
     users.remove(json["user_name"])
     game.users = users
     db.session.commit()
+
+    emit("playerLeftGame", {"num_players": len(game.users)}, to=json["game_code"])
 
     
