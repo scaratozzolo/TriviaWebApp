@@ -84,6 +84,7 @@
 
         <div class="card-header">
           <h1 class="card-title">Scores</h1>
+          <div class="card-title float-right" id="num-users">{{ game.users|length }} in game</div>
         </div>
         <!-- /.card-header -->
         
@@ -217,6 +218,19 @@
         $("#players-scores").append( $("<hr/>") );
 
       });
+
+    });
+
+
+    socket.on('playerJoinGame', function (json) {
+      
+      $("#num-users").html(json.num_players + " in game")
+
+    });
+
+    socket.on('playerLeftGame', function (json) {
+      
+      $("#num-users").html(json.num_players + " in game")
 
     });
 
