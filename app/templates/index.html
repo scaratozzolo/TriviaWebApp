@@ -111,13 +111,15 @@
 
 
 <div class="container">
-
+    {% if live_games != [] %}
+    <h4 class="text-center">Public games</h4>
+    {% endif %}
     <div class="card-columns" id="live-games">
 
         {% for game in live_games %}
 
         <div class="card">
-            <div class="card-header text-white bg-primary">{{ game.game_code }}</div>
+            <div class="card-header text-white bg-dark">{{ game.game_code }}</div>
             <div class="card-body">
               <div># rounds: {{ game.num_rounds }}</div>
               <div># questions/round: {{ game.num_questions }}</div>
@@ -125,7 +127,7 @@
               {% if game.game_msg != '' %}
               <div>Message from host: {{ game.game_msg }}</div>
               {% endif %}
-              
+              <div><button type="button" class="btn btn-dark" onclick="selectGame('{{ game.game_code }}');">Select Game</button></div>
             </div>
         </div>
 
@@ -139,3 +141,19 @@
 
 {% endblock %}
 
+{% block js %}
+
+
+<script type="text/javascript" charset="utf-8">
+
+    function selectGame(game_code){
+
+        $("#game_code").val(game_code);
+
+        $("#user_name").focus();
+    }
+
+
+</script>
+
+{% endblock %}
