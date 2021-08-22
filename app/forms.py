@@ -9,7 +9,7 @@ from app.models import Game
 
 class CreateGameForm(FlaskForm):
     
-    provider_select = RadioField("Question provider:", choices=[("open", "Open DB"), ("jep", "Jeopardy"), ("both", "Both")], default="both")
+    provider_select = RadioField("Question provider:", choices=[("open", "Open Trivia DB"), ("jep", "Jeopardy"), ("both", "Both")], default="both")
     num_rounds = IntegerField("# of rounds:", validators=[DataRequired(), NumberRange(1, 10)])
     num_questions = IntegerField("# of questions per round:", validators=[DataRequired(), NumberRange(1, 10)])
     password = PasswordField("Password (optional):")
