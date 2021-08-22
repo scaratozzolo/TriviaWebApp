@@ -172,6 +172,7 @@
 
       $('#gameinfo').html(json.question);
 
+      $("#categories-title").html("");
       $("#categories-body").html("");
 
     });
@@ -247,13 +248,21 @@
       $('#gameinfo').html("The game has finished!")
       $('#answer').html("");
 
+      $("#user-answer").val("")
+      $("#user-points").val("")
+      $('#user-answer').addClass("invisible");
+      $('#user-points').addClass("invisible");
+      $('#user-submit').addClass("invisible");
+
+
+
       $("#categories-title").html("Winners:")
       $('#categories-body').html("")
-      
       for(var i=0; i<3; i++){
         $('#categories-body').append($("<li></li>").html(Object.keys(json)[i] + ": " + json[Object.keys(json)[i]]));
       }
 
+      
 
     });
 
