@@ -113,6 +113,9 @@ def play_game(game_code):
 
 @app.route("/endgame/<game_code>")
 def end_game(game_code):
+
+    if "create_game_data" not in session:
+        return redirect("/")
     
     game = Game.query.filter_by(game_code=game_code).first()
 
@@ -129,7 +132,7 @@ def end_game(game_code):
 @app.route("/leavegame/<game_code>")
 def leave_game(game_code): 
 
-    login_user(current_user)
+    logout_user(current_user)
 
     session.pop("join_game_data", None)
     session.pop("create_game_data", None)
