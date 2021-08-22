@@ -82,7 +82,10 @@ def start_question(json):
 
     if question_data['bonus']:
         if int(gameround) == session["create_game_data"]["num_rounds"]:
-            max_points = ((10 * int(question_num)) // 2) * (int(gameround)//2) # (int(gameround) - 1)
+            if int(gameround) != 1:
+                max_points = ((10 * int(question_num)) // 2) * (int(gameround)//2) # (int(gameround) - 1)
+            else:
+                max_points = ((10 * int(question_num)) // 2)
         else:
             max_points = (10 * int(question_num)) // 2
     else:
@@ -121,6 +124,8 @@ def submit_answer_player(json):
 
 @socketio.on('markAnswer')
 def submit_answer_player(json):
+
+    # if player doesn't answer, score stays same...should remove points?
 
     gameround, question_num = json['question'].split("_")
 
