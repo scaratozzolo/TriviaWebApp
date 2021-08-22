@@ -154,4 +154,10 @@ def leave_game(json):
 
     leave_room(json["game_code"])
 
+    game = Game.query.filter_by(game_code=json["game_code"]).first()
+    users = list(game.users)
+    users.remove(json["user_name"])
+    game.users = users
+    db.session.commit()
+
     

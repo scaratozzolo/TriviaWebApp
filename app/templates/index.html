@@ -123,6 +123,7 @@
             <div class="card-body">
               <div># rounds: {{ game.num_rounds }}</div>
               <div># questions/round: {{ game.num_questions }}</div>
+              <div>Players: {{ game.users|length }}</div>
               <div>Provider: {{ game.provider }}</div>
               {% if game.game_msg != '' %}
               <div>Message from host: {{ game.game_msg }}</div>
