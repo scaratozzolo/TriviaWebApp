@@ -2,6 +2,7 @@ from flask import Flask, session
 from flask_socketio import SocketIO
 from flask_login import LoginManager
 from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
 from app.users import User
 
 app = Flask(__name__)
@@ -10,6 +11,9 @@ app.secret_key = 'scottstrivia'
 app.config['SESSION_TYPE'] = 'filesystem'
 sess = Session()
 sess.init_app(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////trivia.db'
+db = SQLAlchemy(app)
 
 socketio = SocketIO(app)
 
@@ -27,5 +31,7 @@ def load_user(user_id):
         return None
 
 
-from app import routes, socket_events
+from app import routes, socket_events, models
+
+db.create_all()
 

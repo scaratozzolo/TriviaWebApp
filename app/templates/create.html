@@ -30,12 +30,12 @@
                   <div class="col-sm-4">
   
                     
-                    {{ form.num_rounds.label }} {{ form.num_rounds(placeholder="Max rounds: 10", autocomplete="off") }}
+                    {{ form.num_rounds.label }} {{ form.num_rounds(class="form-control", placeholder="Max rounds: 10", autocomplete="off") }}
                     {% for error in form.num_rounds.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
 
-                    {{ form.num_questions.label }} {{ form.num_questions(placeholder="Max questions: 10", autocomplete="off") }}
+                    {{ form.num_questions.label }} {{ form.num_questions(class="form-control", placeholder="Max questions: 10", autocomplete="off") }}
                     {% for error in form.num_questions.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
@@ -47,7 +47,8 @@
 
                   <div class="col-sm-4">
   
-                    
+                    {{ form.password.label }}
+                    {{ form.password(class="form-control", placeholder="Enter password", autocomplete="off") }}<br>
 
                     {{ form.submit(class="btn btn-success btn-block mt-4") }}
                     <p id="notice"></p>

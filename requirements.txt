@@ -3,5 +3,6 @@ Flask-WTF
 flask-socketio
 flask-login
 Flask-Session
+Flask-SQLAlchemy
 eventlet==0.30.2
 requests

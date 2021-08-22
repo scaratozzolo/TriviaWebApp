@@ -3,7 +3,8 @@ from flask_login import login_user, logout_user, current_user, login_required
 from app.forms import JoinGameForm, CreateGameForm
 from app.users import User
 from app.helpers import generate_game, generate_round
-from app import app, socketio
+from app.models import Game
+from app import app, db
 import string
 import random
 
@@ -14,7 +15,8 @@ def index():
     if current_user.is_authenticated:
         return redirect(f"/game/{session['join_game_data']['game_code']}")
 
-
+    # print(Game.query.all())
+    
     form = JoinGameForm()
 
     if form.validate_on_submit():
@@ -54,6 +56,10 @@ def create_game():
 
         session["scores"] = {}
 
+        new_game = Game(game_code=game_code, password=form.password.data)
+
+        db.session.add(new_game)
+        db.session.commit()
 
         return redirect(f"/game/{game_code}/host")
         # return session["create_game_data"]
@@ -82,6 +88,31 @@ def play_game(game_code):
 
     return render_template("play_game.html", title="Play Trivia")
 
+
+
+@app.route("/endgame/<game_code>")
+def end_game(game_code):
+    
+    game = Game.query.filter_by(game_code=game_code).first()
+
+    db.session.delete(game)
+    db.session.commit()
+
+    session.pop("join_game_data", None)
+    session.pop("create_game_data", None)
+    session.pop("game_questions", None)
+
+    return redirect("/")
+
+
+@app.route("/leavegame/<game_code>")
+def leave_game(game_code):
+
+    session.pop("join_game_data", None)
+    session.pop("create_game_data", None)
+    session.pop("game_questions", None)
+
+    return redirect("/")
 
 
 # for testing purposes

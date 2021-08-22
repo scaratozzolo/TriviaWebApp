@@ -111,4 +111,23 @@ def submit_answer_player(json):
     elif json['status'] == 'wrong':
         session['scores'][json['user_name']] -= json['points']
 
+
+
+@socketio.on('endGame')
+def end_game(json):
+
+    # TODO send winners
+    emit("gameEnded", to=json["game_code"])
+
+    leave_room(json["game_code"])
+
+
+@socketio.on('leaveGame')
+def leave_game(json):
+
+    # TODO send winners
+    emit("playerLeftGame", to=json["game_code"])
+
+    leave_room(json["game_code"])
+
     
