@@ -53,7 +53,7 @@ def start_round(json):
     db.session.commit()
 
     # send(f'Round {json["round"]} starting...', to=json["game_code"])
-    round_qs = session["game_questions"][f'{json["round"]}']
+    round_qs = session["game_questions"][json["round"]]
 
     round_cats = [round_qs[i]['category'] for i in round_qs]
 
@@ -127,9 +127,7 @@ def submit_answer_player(json):
     if json['user_name'] not in session['scores']:
         session['scores'][json['user_name']] = 0
 
-    
-    # TODO bonus questions - add a question type parameter
-    # while generating questions, if last queston add a 'bonus' paramter to question data
+
     if json['status'] == 'correct':
         session['scores'][json['user_name']] += json['points']
     elif json['status'] == 'wrong':
@@ -140,8 +138,9 @@ def submit_answer_player(json):
 @socketio.on('endGame')
 def end_game(json):
 
-    # TODO send winners
-    emit("gameEnded", to=json["game_code"])
+
+    # TODO convert session scores to game.scores (probably do the same with questions too)
+    emit("gameEnded", session['scores'], to=json["game_code"])
 
     leave_room(json["game_code"])
 

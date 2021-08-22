@@ -40,8 +40,7 @@
   
                     <h6 id="categories-title"></h6>
                     <ul id="categories-body"></ul>
-  
-                    </ul>
+
   
                   </div>
   
@@ -173,7 +172,7 @@
 
       $('#gameinfo').html(json.question);
 
-      $("#categories").html("");
+      $("#categories-body").html("");
 
     });
 
@@ -244,7 +243,17 @@
 
     socket.on('gameEnded', function (json) {
       
+      $('#info-title').html("Thanks for playing!");
       $('#gameinfo').html("The game has finished!")
+      $('#answer').html("");
+
+      $("#categories-title").html("Winners:")
+      $('#categories-body').html("")
+      
+      for(var i=0; i<3; i++){
+        $('#categories-body').append($("<li></li>").html(Object.keys(json)[i] + ": " + json[Object.keys(json)[i]]));
+      }
+
 
     });
 
