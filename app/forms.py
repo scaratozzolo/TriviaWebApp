@@ -13,7 +13,7 @@ class CreateGameForm(FlaskForm):
     num_rounds = IntegerField("# of rounds:", validators=[DataRequired(), NumberRange(1, 10)])
     num_questions = IntegerField("# of questions per round:", validators=[DataRequired(), NumberRange(1, 10)])
     password = PasswordField("Password (optional):")
-    game_msg = StringField("Message to players:")
+    game_msg = StringField("Message to players (optional):")
     submit = SubmitField('Submit')
 
     def validate_game_msg(self, game_msg):
