@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="container col-sm-4 mt-4 text-dark ">
+<div class="container col-sm-6 mt-4 text-dark ">
 
     <div class="card card-dark">
       <div class="card-header">
@@ -17,7 +17,7 @@
 
                 <div class="row justify-content-between">
 
-                  <div class="col-sm-4">
+                  <div class="col-sm-2">
 
                     {{ form.provider_select.label }}
                     {% for subfield in form.provider_select %}
@@ -27,7 +27,7 @@
                   </div>
   
   
-                  <div class="col-sm-4">
+                  <div class="col-sm-5">
   
                     
                     {{ form.num_rounds.label }} {{ form.num_rounds(class="form-control", placeholder="Max rounds: 10", autocomplete="off") }}
@@ -45,13 +45,13 @@
                   </div>
 
 
-                  <div class="col-sm-4">
+                  <div class="col-sm-5">
   
                     {{ form.password.label }}
-                    {{ form.password(class="form-control", placeholder="Enter password", autocomplete="off") }}<br>
+                    {{ form.password(class="form-control", placeholder="Enter password", autocomplete="off") }}
 
                     {{ form.game_msg.label }}
-                    {{ form.game_msg(class="form-control", placeholder="Enter message", autocomplete="off") }}<br>
+                    {{ form.game_msg(class="form-control", placeholder="Enter message", autocomplete="off") }}
   
                   </div>
 
