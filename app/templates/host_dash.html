@@ -64,10 +64,16 @@
                                                     <div id="collapse{{ round }}{{ question}}" class="collapse" aria-labelledby="heading{{ round }}{{ question}}" data-parent="#accordion{{ round }}">
                                                         <div class="card-body">
                                                             
-                                                            <p>Question: {{ session.game_questions[round][question]['question'] }}</p>
-                                                            <p>Answer: {{ session.game_questions[round][question]['answer'] }}</p>
+                                                            <p>Question: {{ session.game_questions[round][question]['question']|safe }}</p>
+                                                            <p>Answer: {{ session.game_questions[round][question]['answer']|safe }}</p>
                                                             <p>Difficulty: {{ session.game_questions[round][question]['difficulty'] }}</p>
-                                                            <p>Provider: {{ session.game_questions[round][question]['provider'] }}</p>
+                                                            {% if session.game_questions[round][question]['provider'] == 'both' %}
+                                                            <p>Provider: <a href="https://opentdb.com/">Open Trivia DB</a> & <a href="https://jservice.io/">Jeopardy</a></p>
+                                                            {% elif session.game_questions[round][question]['provider'] == 'open' %}
+                                                            <p>Provider: <a href="https://opentdb.com/">Open Trivia DB</a></p>
+                                                            {% elif session.game_questions[round][question]['provider'] == 'jep' %}
+                                                            <p>Provider: <a href="https://jservice.io/">Jeopardy</a></p>
+                                                            {% endif %}
     
                                                         </div>
                                                     </div>
@@ -135,7 +141,7 @@
 
 
           <div class="card card-warning">
-
+            <!-- Set max width probably -->
             <div class="card-header">
               <h1 class="card-title">Scores</h1>
               <div class="card-title float-right" id="num-users">{{ game.users|length }} in game</div>
