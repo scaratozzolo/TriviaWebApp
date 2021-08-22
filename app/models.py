@@ -1,7 +1,7 @@
 from app import db
 
 class Game(db.Model):
-    # TODO keep track of game status (current round/question)
+    # TODO scores, game questions, max players
     game_code = db.Column(db.String(6), primary_key=True)
     password = db.Column(db.String(256))
     num_rounds = db.Column(db.Integer)

@@ -11,7 +11,7 @@
         <script src="https://kit.fontawesome.com/259882b2fb.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='AdminLTE-3.1.0/dist/css/adminlte.min.css') }}">
     </head>
-    <body>
+    <body class="bg-light">
 
         {% for message in get_flashed_messages() %}
         <div class="alert alert-warning">

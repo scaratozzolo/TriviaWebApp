@@ -121,8 +121,8 @@
         <div class="card">
             <div class="card-header text-white bg-dark">{{ game.game_code }}</div>
             <div class="card-body">
-              <div># rounds: {{ game.num_rounds }}</div>
-              <div># questions/round: {{ game.num_questions }}</div>
+              <div>Rounds: {{ game.num_rounds }}</div>
+              <div>Questions per Round: {{ game.num_questions }}</div>
               <div>Players: {{ game.users|length }}</div>
               {% if game.provider == 'both' %}
               <div>Provider: <a href="https://opentdb.com/">Open Trivia DB</a> & <a href="https://jservice.io/">Jeopardy</a></div>
