@@ -14,8 +14,6 @@ def index():
     # if "join_game_data" in session:
     if current_user.is_authenticated:
         return redirect(f"/game/{session['join_game_data']['game_code']}")
-
-    # print(Game.query.all())
     
     form = JoinGameForm()
 
@@ -30,7 +28,9 @@ def index():
 
         return redirect(f"/game/{form.game_code.data}")
 
-    return render_template('index.html', title='Home', form=form)
+    live_games = Game.query.filter_by(password='').filter_by(game_started=False).all()
+
+    return render_template('index.html', title='Home', form=form, live_games=live_games)
 
 
 
@@ -56,7 +56,12 @@ def create_game():
 
         session["scores"] = {}
 
-        new_game = Game(game_code=game_code, password=form.password.data)
+        new_game = Game(game_code=game_code, 
+                        password=form.password.data,
+                        num_rounds=form.num_rounds.data,
+                        num_questions=form.num_questions.data,
+                        provider=form.provider_select.data,
+                        game_started=False)
 
         db.session.add(new_game)
         db.session.commit()
@@ -124,4 +129,13 @@ def clearsession():
     session.pop("game_questions", None)
     print("session data cleared")
 
+    return redirect("/")
+
+
+@app.route("/resettable")
+def reset_table():
+
+    Game.query.delete()
+    db.session.commit()
+    print("table deleted")
     return redirect("/")

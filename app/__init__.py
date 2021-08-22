@@ -12,7 +12,7 @@ app.config['SESSION_TYPE'] = 'filesystem'
 sess = Session()
 sess.init_app(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////trivia.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///trivia.db'
 db = SQLAlchemy(app)
 
 socketio = SocketIO(app)

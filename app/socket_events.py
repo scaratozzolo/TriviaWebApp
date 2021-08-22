@@ -1,7 +1,8 @@
-from app import socketio
+from app import socketio, db
 from flask import request, session
 from flask_socketio import join_room, leave_room, send, emit
 from app.helpers import generate_game
+from app.models import Game
 
 
 
@@ -41,6 +42,11 @@ def host_game(json):
 
 @socketio.on('startRound')
 def start_round(json):
+
+    if json["round"] == 1:
+        game = Game.query.filter_by(game_code=json["game_code"]).first()
+        game.game_started = True
+        db.session.commit()
 
     # send(f'Round {json["round"]} starting...', to=json["game_code"])
     round_qs = session["game_questions"][f'{json["round"]}']

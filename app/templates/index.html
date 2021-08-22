@@ -108,5 +108,30 @@
 
 </div>
 
+
+
+<div class="container">
+
+    <div class="card-columns" id="live-games">
+
+        {% for game in live_games %}
+
+        <div class="card">
+            <div class="card-header text-white bg-primary">{{ game.game_code }}</div>
+            <div class="card-body">
+              <div># rounds: {{ game.num_rounds }}</div>
+              <div># questions: {{ game.num_questions }}</div>
+              <div>Provider: {{ game.provider }}</div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+
+    </div>
+
+</div>
+
+
 {% endblock %}
 
