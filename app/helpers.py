@@ -129,16 +129,16 @@ def generate_game(rounds=4, num_questions=5, provider="both"):
 
     for round in range(1, rounds+1):
         
-        game_questions[str(round)] = {}
+        game_questions[round] = {}
 
         for question in range(1, num_questions+1):
 
             if round == 1:
-                game_questions[str(round)][f"{round}_{question}"] = random_question("easy", provider, token)
+                game_questions[round][f"{round}_{question}"] = random_question("easy", provider, token)
             elif round == rounds:
-                game_questions[str(round)][f"{round}_{question}"] = random_question("hard", provider, token)
+                game_questions[round][f"{round}_{question}"] = random_question("hard", provider, token)
             elif 0.33 < (round/rounds) <= 0.67:
-                game_questions[str(round)][f"{round}_{question}"] = random_question("medium", provider, token)
+                game_questions[round][f"{round}_{question}"] = random_question("medium", provider, token)
 
                     
             else:
@@ -146,27 +146,27 @@ def generate_game(rounds=4, num_questions=5, provider="both"):
                 if round/rounds <= 0.33:
 
                     if random.random() >= (round/rounds):
-                        game_questions[str(round)][f"{round}_{question}"] = random_question("easy", provider, token)
+                        game_questions[round][f"{round}_{question}"] = random_question("easy", provider, token)
                     else:
-                        game_questions[str(round)][f"{round}_{question}"] = random_question("medium", provider, token)
+                        game_questions[round][f"{round}_{question}"] = random_question("medium", provider, token)
 
                 elif round/rounds > 0.66:
 
                     if random.random() <= (round/rounds):
-                        game_questions[str(round)][f"{round}_{question}"] = random_question("hard", provider, token)
+                        game_questions[round][f"{round}_{question}"] = random_question("hard", provider, token)
                     else:
-                        game_questions[str(round)][f"{round}_{question}"] = random_question("medium", provider, token)
+                        game_questions[round][f"{round}_{question}"] = random_question("medium", provider, token)
 
             # print(f"{round}-{question} gen")
 
             if question == (num_questions):
-                game_questions[str(round)][f"{round}_{question}"]['bonus'] = True
+                game_questions[round][f"{round}_{question}"]['bonus'] = True
             else:
-                game_questions[str(round)][f"{round}_{question}"]['bonus'] = False
+                game_questions[round][f"{round}_{question}"]['bonus'] = False
 
 
-    game_questions[str(round)][f"{rounds}_{num_questions-1}"] = random_question("easy", provider, token)
-    game_questions[str(round)][f"{rounds}_{num_questions-1}"] ['bonus'] = False
+    game_questions[round][f"{rounds}_{num_questions-1}"] = random_question("easy", provider, token)
+    game_questions[round][f"{rounds}_{num_questions-1}"] ['bonus'] = False
 
     return game_questions
 

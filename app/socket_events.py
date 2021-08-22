@@ -43,10 +43,14 @@ def host_game(json):
 @socketio.on('startRound')
 def start_round(json):
 
+    game = Game.query.filter_by(game_code=json["game_code"]).first()
+
     if json["round"] == 1:
-        game = Game.query.filter_by(game_code=json["game_code"]).first()
         game.game_started = True
-        db.session.commit()
+        
+
+    game.cur_round = json["round"]
+    db.session.commit()
 
     # send(f'Round {json["round"]} starting...', to=json["game_code"])
     round_qs = session["game_questions"][f'{json["round"]}']
@@ -59,10 +63,19 @@ def start_round(json):
 @socketio.on('startQuestion')
 def start_question(json):
 
+    game = Game.query.filter_by(game_code=json["game_code"]).first()
+    
+
     gameround, question_num = json['question'].split("_")
     # send(f'Round {gameround}, Question {question_num} starting...', to=json["game_code"])
 
-    question_data = session["game_questions"][gameround][json['question']]
+    game.cur_question = int(question_num)
+    game.cur_question_id = json['question']
+    game.cur_question_started = True
+
+    db.session.commit()
+
+    question_data = session["game_questions"][int(gameround)][json['question']]
     
     q = question_data["question"]
     cat = question_data["category"]
@@ -81,9 +94,14 @@ def start_question(json):
 @socketio.on('endQuestion')
 def end_question(json):
 
+    game = Game.query.filter_by(game_code=json["game_code"]).first()
+
     gameround, question_num = json['question'].split("_")
 
-    a = session["game_questions"][gameround][json['question']]["answer"]
+    game.cur_question_started = False
+    db.session.commit()
+
+    a = session["game_questions"][int(gameround)][json['question']]["answer"]
 
     emit("endQuestionPlayer", {'answer': a, 'round': gameround, "question_num": question_num}, to=json["game_code"])
 

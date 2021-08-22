@@ -22,11 +22,19 @@
   
               <div class="d-flex flex-column" id="main-body">
                   
-                  <h5 id="gameinfo">Hello, {{ current_user.user_name }}! Game will start soon!<br>
-                  {% if game.game_msg != '' %}
-                  Message from host: {{ game.game_msg }}
+                  {% if game.game_started %}
+                    <h5 id="gameinfo">The game has already started. Please wait for the next question!<br>
+                    {% if game.game_msg != '' %}
+                    Message from host: {{ game.game_msg }}
+                    {% endif %}
+                    </h5>
+                  {% else %}
+                    <h5 id="gameinfo">Hello, {{ current_user.user_name }}! Game will start soon!<br>
+                    {% if game.game_msg != '' %}
+                    Message from host: {{ game.game_msg }}
+                    {% endif %}
+                    </h5>
                   {% endif %}
-                  </h5>
   
                   <div id="categories">
   

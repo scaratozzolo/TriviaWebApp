@@ -62,7 +62,11 @@ def create_game():
                         num_questions=form.num_questions.data,
                         provider=form.provider_select.data,
                         game_started=False,
-                        game_msg=form.game_msg.data)
+                        game_msg=form.game_msg.data,
+                        cur_round=0,
+                        cur_question=0,
+                        cur_question_id="",
+                        cur_question_started=False)
 
         db.session.add(new_game)
         db.session.commit()
@@ -80,7 +84,9 @@ def host_game(game_code):
     if "create_game_data" not in session:
         return redirect("/")
 
-    return render_template("host_dash.html", title="Host Dashboard")
+    game = Game.query.filter_by(game_code=game_code).first()
+
+    return render_template("host_dash.html", title="Host Dashboard", game=game)
 
 
 
