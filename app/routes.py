@@ -132,7 +132,7 @@ def end_game(game_code):
 @app.route("/leavegame/<game_code>")
 def leave_game(game_code): 
 
-    logout_user(current_user)
+    logout_user()
 
     session.pop("join_game_data", None)
     session.pop("create_game_data", None)
