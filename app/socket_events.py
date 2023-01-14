@@ -3,18 +3,19 @@ from flask import request, session
 from flask_socketio import join_room, leave_room, send, emit
 from app.helpers import generate_game
 from app.models import Game
+from loguru import logger
 
 
 
 # @socketio.on('disconnect')
 # def disconnect():
-#     print('Client disconnected')
+#     logger.info('Client disconnected')
 #     print(request.sid)
 
 
 # @socketio.on('connect')
 # def connect():
-#     print('Client connected')
+#     logger.info('Client connected')
 #     print(request.sid)
 
 
@@ -153,7 +154,6 @@ def end_game(json):
 @socketio.on('leaveGame')
 def leave_game(json):
     
-
     leave_room(json["game_code"])
 
     game = Game.query.filter_by(game_code=json["game_code"]).first()

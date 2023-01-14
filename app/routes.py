@@ -4,11 +4,18 @@ from app.forms import JoinGameForm, CreateGameForm
 from app.users import User
 from app.helpers import generate_game, generate_round
 from app.models import Game
-from app import app, db
+from app import db
 import string
 import random
+from flask import Blueprint
 
-@app.route('/', methods=['GET', 'POST'])
+all_blueprint = Blueprint(
+    'index_blueprint',
+    __name__,
+    url_prefix=''
+)
+
+@all_blueprint.route('/', methods=['GET', 'POST'])
 def index():
 
     # if "join_game_data" in session:
@@ -40,7 +47,7 @@ def index():
 
 
 
-@app.route('/create', methods=['GET', 'POST'])
+@all_blueprint.route('/create', methods=['GET', 'POST'])
 def create_game():
 
 
@@ -85,7 +92,7 @@ def create_game():
 
 
 
-@app.route('/game/<game_code>/host')
+@all_blueprint.route('/game/<game_code>/host')
 def host_game(game_code):
 
     if "create_game_data" not in session:
@@ -98,7 +105,7 @@ def host_game(game_code):
 
 
 
-@app.route('/game/<game_code>')
+@all_blueprint.route('/game/<game_code>')
 @login_required
 def play_game(game_code):
 
@@ -111,7 +118,7 @@ def play_game(game_code):
 
 
 
-@app.route("/endgame/<game_code>")
+@all_blueprint.route("/endgame/<game_code>")
 def end_game(game_code):
 
     if "create_game_data" not in session:
@@ -129,7 +136,7 @@ def end_game(game_code):
     return redirect("/")
 
 
-@app.route("/leavegame/<game_code>")
+@all_blueprint.route("/leavegame/<game_code>")
 def leave_game(game_code): 
 
     logout_user()
@@ -142,7 +149,7 @@ def leave_game(game_code):
 
 
 # for testing purposes
-@app.route("/clearsession")
+@all_blueprint.route("/clearsession")
 def clearsession():
     
     session.pop("join_game_data", None)
@@ -153,7 +160,7 @@ def clearsession():
     return redirect("/")
 
 
-@app.route("/resettable")
+@all_blueprint.route("/resettable")
 def reset_table():
 
     Game.query.delete()
